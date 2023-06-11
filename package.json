@@ -16,9 +16,9 @@
     "not < 0.25%"
   ],
   "devDependencies": {
-    "@babel/core": "^7.22.1",
-    "@babel/preset-env": "^7.22.4",
-    "babel-loader": "^9.1.2",
+    "@babel/core": "7.22.1",
+    "@babel/preset-env": "7.22.4",
+    "babel-loader": "9.1.2",
     "eslint": "8.28.0",
     "eslint-config-htmlacademy": "8.0.0"
   },
@@ -26,9 +26,9 @@
     "node": "18"
   },
   "dependencies": {
-    "copy-webpack-plugin": "^11.0.0",
-    "webpack": "^5.86.0",
-    "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^4.15.0"
+    "copy-webpack-plugin": "11.0.0",
+    "webpack": "5.86.0",
+    "webpack-cli": "5.1.4",
+    "webpack-dev-server": "4.15.0"
   }
 }
