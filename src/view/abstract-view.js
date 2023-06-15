@@ -6,7 +6,6 @@ export default class AbstractView{
     if (!this.#element) {
       this.#element = createElement(this.template);
     }
-
     return this.#element;
   }
 
