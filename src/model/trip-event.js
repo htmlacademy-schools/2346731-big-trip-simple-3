@@ -58,9 +58,13 @@ class TripEvent{
 
   #offers = [];
 
+  getOffers(){
+    return this.#offers.slice(0);
+  }
+
   addOffer(offer){
     if (offer instanceof Offer){
-      this.#offers.push();
+      this.#offers.push(offer);
     }
   }
 

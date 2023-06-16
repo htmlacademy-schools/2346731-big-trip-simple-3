@@ -1,14 +1,37 @@
 import AbstractView from '../abstract-view';
-import EventBio from './event-bio';
-import EventDetails from './event-details';
+import EventBioView from './event-bio-view';
+import EventDetailsView from './event-details-view';
+
+const createEditFormTemplate = () => {
+
+};
 
 export default class EventEditView extends AbstractView{
-  bio = new EventBio().template;
-  details = new EventDetails().template;
+  tripEvent;
+  bioView = new EventBioView();
+  detailsView = new EventDetailsView();
+  getOffers(){
+
+  }
+  setOffers(){
+
+  }
+  getDestination(){
+
+  }
+  setDestination(){
+
+  }
+
   get template() {
     return `<form className="event event--edit" action="#" method="post">
-  ${this.bio}
-  ${this.details}
+  ${this.bioView.getTemplate(this.tripEvent)}
+  ${this.detailsView.getTemplate(this.tripEvent)}
 </form>`;
+  }
+
+  constructor(tripEvent) {
+    super();
+    this.tripEvent = tripEvent;
   }
 }

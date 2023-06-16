@@ -20,8 +20,10 @@ export default class AbstractPresenter {
     render(tripEventsSortBar, eventListParentElement);
     // Список
     render(tripEventsList, eventListParentElement);
-    //Форма редактирования
-    tripEventsList.add(new EventEditView());
+
+    const randomTripEvent = createRandomTripEvent();
+    tripEventsList.add(new EventEditView(createRandomTripEvent()));
+
     //3хТочка Маршрута
     for (let i = 0; i < 3; i++) {
       tripEventsList.add(new TripEventView(createRandomTripEvent()));

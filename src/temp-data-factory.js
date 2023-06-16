@@ -1,5 +1,6 @@
 import {Destination, EVENTTYPE, Offer, TripEvent, Price} from './model/trip-event';
 
+const randomOfferDescriptions = ['Add luggage','Add meal','Switch to comfort class'];
 const cities = ['Rome','Berlin','Paris','Madrid','Prague','Vienna','Munchen','Helsinki'];
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
@@ -30,7 +31,7 @@ function getRandomDestination(){
 function getRandomOffer(){
   const offer = new Offer();
   offer.type = getRandomEventType();
-  offer.name = cities[getRandomInt(cities.length - 1)];
+  offer.description = randomOfferDescriptions[getRandomInt(randomOfferDescriptions.length - 1)];
   offer.price = new Price(getRandomInt(150) + 1, 'USD');
   return offer;
 }
@@ -39,6 +40,7 @@ export function createRandomTripEvent(){
   const newEvent = new TripEvent();
   newEvent.eventType = getRandomEventType();
   newEvent.setDestination(getRandomDestination());
+  newEvent.addOffer(getRandomOffer());
   newEvent.addOffer(getRandomOffer());
   newEvent.startDateTime = new Date();
   newEvent.endDateTime = new Date();
