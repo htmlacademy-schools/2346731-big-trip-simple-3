@@ -6,10 +6,46 @@ import TripEventView from '../view/trip-event-view';
 import EventEditView from '../view/event-edit-form/event-edit-view';
 import {createRandomTripEvent} from '../temp-data-factory';
 export default class AbstractPresenter {
+  #tripEventsSortBar = new TripEventsSortbarView();
+  #tripEventsListView = new TripEventsListView();
+  addTripEvent(tripEvent){
+    const tripEventView = new TripEventView(tripEvent);
+    const editView = new EventEditView(tripEvent);
+    this.#tripEventsListView.add(tripEventView);
+
+    const replaceEventViewWithEditView = () => {
+      tripEventView.getElement().replaceWith(editView.getElement());
+    };
+
+    const replaceEditViewWithEventView = () => {
+      editView.getElement().replaceWith(tripEventView.getElement());
+    };
+
+    const editEventFormEscapeKeyHandler = (evt) => {
+      if (evt.key === 'Escape' || evt.keyCode == '38') {
+        evt.preventDefault();
+        replaceEditViewWithEventView();
+        document.body.removeEventListener('keydown', editEventFormEscapeKeyHandler);
+      }
+    };
+
+    const editEventFormSubmitHandler = (evt) => {
+      evt.preventDefault();
+      replaceEditViewWithEventView();
+      document.body.removeEventListener('keydown', editEventFormEscapeKeyHandler);
+    };
+
+    const tripEventUnwrapButtonHandler = (evt)=>{
+      evt.preventDefault();
+      replaceEventViewWithEditView();
+      document.body.addEventListener('keydown', editEventFormEscapeKeyHandler);
+    };
+
+    const tripEventUnwrapButton = tripEventView.getElement().querySelector('.event__rollup-btn');
+    tripEventUnwrapButton.addEventListener('click', tripEventUnwrapButtonHandler);
+  }
 
   init(){
-    const tripEventsSortBar = new TripEventsSortbarView();
-    const tripEventsList = new TripEventsListView();
     // Фильтры
     const filtersParentElement = document.querySelector('.trip-controls__filters');
     render(new TimeFiltersView(), filtersParentElement);
@@ -17,16 +53,13 @@ export default class AbstractPresenter {
     const eventListParentElement = document.querySelector('.trip-events');
 
     //Сортировка
-    render(tripEventsSortBar, eventListParentElement);
+    render(this.#tripEventsListView, eventListParentElement);
     // Список
-    render(tripEventsList, eventListParentElement);
-
-    const randomTripEvent = createRandomTripEvent();
-    tripEventsList.add(new EventEditView(createRandomTripEvent()));
-
+    render(this.#tripEventsListView, eventListParentElement);
+    this.addTripEvent(createRandomTripEvent());
     //3хТочка Маршрута
     for (let i = 0; i < 3; i++) {
-      tripEventsList.add(new TripEventView(createRandomTripEvent()));
+      this.addTripEvent(createRandomTripEvent());
     }
 
   }
