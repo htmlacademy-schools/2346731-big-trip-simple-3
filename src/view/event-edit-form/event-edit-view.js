@@ -2,10 +2,6 @@ import AbstractView from '../abstract-view';
 import EventBioView from './event-bio-view';
 import EventDetailsView from './event-details-view';
 
-const createEditFormTemplate = () => {
-
-};
-
 export default class EventEditView extends AbstractView{
   tripEvent;
   bioView = new EventBioView();
