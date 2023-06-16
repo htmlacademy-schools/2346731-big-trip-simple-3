@@ -15,8 +15,31 @@ export default class TripEventsListView extends AbstractView {
   }
 
   add(tripEventView){
+    const welcomeMessage = document.querySelector('.trip-events__msg');
+    if(welcomeMessage){
+      welcomeMessage.remove();
+    }
     const listElement = createElement(createEventTemplate());
     render(tripEventView, listElement);
     this.getElement().append(listElement);
+  }
+
+  isEmpty(){
+    if (!this.getElement()) {
+      return true;
+    }
+    const tripEventListChildren = this.getElement().children;
+    for (const child of tripEventListChildren){
+      if (child.tagName === 'li'){
+        return false;
+      }
+    }
+    return true;
+  }
+}
+
+export class EmptyListMessage{
+  get template(){
+    return '<p class="trip-events__msg">Click New Event to create your first point</p>';
   }
 }
