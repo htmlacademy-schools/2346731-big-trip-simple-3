@@ -1,4 +1,4 @@
-import AbstractView from './abstract-view.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import {createElement, render} from '../render';
 
 const createListTemplate = () => (`
@@ -21,14 +21,14 @@ export default class TripEventsListView extends AbstractView {
     }
     const listElement = createElement(createEventTemplate());
     render(tripEventView, listElement);
-    this.getElement().append(listElement);
+    this.element.append(listElement);
   }
 
   isEmpty(){
-    if (!this.getElement()) {
+    if (!this.element) {
       return true;
     }
-    const tripEventListChildren = this.getElement().children;
+    const tripEventListChildren = this.element.children;
     for (const child of tripEventListChildren){
       if (child.tagName === 'li'){
         return false;

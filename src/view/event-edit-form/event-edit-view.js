@@ -1,4 +1,4 @@
-import AbstractView from '../abstract-view';
+import AbstractView from '../../framework/view/abstract-view.js';
 import EventBioView from './event-bio-view';
 import EventDetailsView from './event-details-view';
 

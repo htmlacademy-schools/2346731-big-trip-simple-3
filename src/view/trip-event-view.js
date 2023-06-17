@@ -1,5 +1,4 @@
-import AbstractView from './abstract-view.js';
-import {TripEvent} from '../model/trip-event';
+import AbstractView from '../framework/view/abstract-view.js';
 
 const createEventTemplate = (event) => (
   `<div class="event">
