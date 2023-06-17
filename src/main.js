@@ -1,4 +1,4 @@
-import EventListPresenter from './presenter/event-list-presenter';
+import MainPresenter from './presenter/main-presenter';
 
-const presenter = new EventListPresenter();
+const presenter = new MainPresenter();
 presenter.init();

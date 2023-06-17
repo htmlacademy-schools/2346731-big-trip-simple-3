@@ -8,7 +8,7 @@ export default class EventEditView extends AbstractView{
   detailsView = new EventDetailsView();
 
   get template() {
-    return `<form className="event event--edit" action="#" method="post">
+    return `<form class="event event--edit" action="#" method="post">
   ${this.bioView.getTemplate(this.tripEvent)}
   ${this.detailsView.getTemplate(this.tripEvent)}
 </form>`;
@@ -21,11 +21,11 @@ export default class EventEditView extends AbstractView{
 
   setFormSubmitHandler = (callback) => {
     this._callback.formSubmit = callback;
-    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
+    this.element.addEventListener('submit', this.#formSubmitHandler);
   };
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this._callback.formSubmit();
+    this._callback.formSubmit(evt);
   };
 }
