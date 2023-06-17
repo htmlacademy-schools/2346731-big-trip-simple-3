@@ -1,4 +1,4 @@
-import AbstractView from './abstract-view.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import {createElement, render} from '../render';
 
 const createListTemplate = () => (`
@@ -8,6 +8,7 @@ const createListTemplate = () => (`
 const createEventTemplate = () => (`
   <li class="trip-events__item"></li>
 `);
+
 
 export default class TripEventsListView extends AbstractView {
   get template() {
@@ -21,25 +22,19 @@ export default class TripEventsListView extends AbstractView {
     }
     const listElement = createElement(createEventTemplate());
     render(tripEventView, listElement);
-    this.getElement().append(listElement);
+    this.element.append(listElement);
   }
 
   isEmpty(){
-    if (!this.getElement()) {
+    if (!this.element) {
       return true;
     }
-    const tripEventListChildren = this.getElement().children;
+    const tripEventListChildren = this.element.children;
     for (const child of tripEventListChildren){
       if (child.tagName === 'li'){
         return false;
       }
     }
     return true;
-  }
-}
-
-export class EmptyListMessage{
-  get template(){
-    return '<p class="trip-events__msg">Click New Event to create your first point</p>';
   }
 }

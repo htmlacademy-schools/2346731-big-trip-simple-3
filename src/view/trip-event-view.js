@@ -1,5 +1,4 @@
-import AbstractView from './abstract-view.js';
-import {TripEvent} from '../model/trip-event';
+import AbstractView from '../framework/view/abstract-view.js';
 
 const createEventTemplate = (event) => (
   `<div class="event">
@@ -43,4 +42,15 @@ export default class TripEventView extends AbstractView {
     super();
     this.tripEvent = tripEvent;
   }
+
+  setUnwrapHandler = (callback)=>{
+    this._callback.click = callback;
+    const tripEventUnwrapButton = this.element.querySelector('.event__rollup-btn');
+    tripEventUnwrapButton.addEventListener('click', this.#clickHandler);
+  };
+
+  #clickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.click();
+  };
 }

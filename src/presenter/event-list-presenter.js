@@ -15,11 +15,11 @@ export default class EventListPresenter {
     this.#tripEventsListView.add(tripEventView);
 
     const replaceEventViewWithEditView = () => {
-      tripEventView.getElement().replaceWith(editView.getElement());
+      tripEventView.element.replaceWith(editView.element);
     };
 
     const replaceEditViewWithEventView = () => {
-      editView.getElement().replaceWith(tripEventView.getElement());
+      editView.element.replaceWith(tripEventView.element);
     };
 
     const editEventFormEscapeKeyHandler = (evt) => {
@@ -28,7 +28,7 @@ export default class EventListPresenter {
         replaceEditViewWithEventView();
         document.body.removeEventListener('keydown', editEventFormEscapeKeyHandler);
         // eslint-disable-next-line no-use-before-define
-        editView.getElement().removeEventListener('submit', editEventFormSubmitHandler);
+        editView.element.removeEventListener('submit', editEventFormSubmitHandler);
       }
     };
 
@@ -36,25 +36,23 @@ export default class EventListPresenter {
       evt.preventDefault();
       replaceEditViewWithEventView();
       document.body.removeEventListener('keydown', editEventFormEscapeKeyHandler);
-      editView.getElement().removeEventListener('submit', editEventFormSubmitHandler);
+      editView.element.removeEventListener('submit', editEventFormSubmitHandler);
     };
 
     const tripEventUnwrapButtonHandler = (evt)=>{
       evt.preventDefault();
       replaceEventViewWithEditView();
       document.body.addEventListener('keydown', editEventFormEscapeKeyHandler);
-      editView.getElement().addEventListener('submit', editEventFormSubmitHandler);
+      editView.setFormSubmitHandler(editEventFormSubmitHandler);
     };
 
-    const tripEventUnwrapButton = tripEventView.getElement().querySelector('.event__rollup-btn');
-    tripEventUnwrapButton.addEventListener('click', tripEventUnwrapButtonHandler);
+    tripEventView.setUnwrapHandler(tripEventUnwrapButtonHandler);
   }
 
   init(){
     // Фильтры
     const filtersParentElement = document.querySelector('.trip-controls__filters');
     render(this.#timeFiltersView, filtersParentElement);
-
     const eventListParentElement = document.querySelector('.trip-events');
 
     if(this.#tripEventsListView.isEmpty()) {

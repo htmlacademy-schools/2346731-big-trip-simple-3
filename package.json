@@ -19,8 +19,10 @@
     "@babel/core": "7.22.1",
     "@babel/preset-env": "7.22.4",
     "babel-loader": "9.1.2",
+    "css-loader": "^6.8.1",
     "eslint": "8.28.0",
-    "eslint-config-htmlacademy": "8.0.0"
+    "eslint-config-htmlacademy": "8.0.0",
+    "style-loader": "^3.3.3"
   },
   "engines": {
     "node": "18"
