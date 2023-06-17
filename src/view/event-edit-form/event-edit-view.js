@@ -6,18 +6,6 @@ export default class EventEditView extends AbstractView{
   tripEvent;
   bioView = new EventBioView();
   detailsView = new EventDetailsView();
-  getOffers(){
-
-  }
-  setOffers(){
-
-  }
-  getDestination(){
-
-  }
-  setDestination(){
-
-  }
 
   get template() {
     return `<form className="event event--edit" action="#" method="post">
@@ -30,4 +18,14 @@ export default class EventEditView extends AbstractView{
     super();
     this.tripEvent = tripEvent;
   }
+
+  setFormSubmitHandler = (callback) => {
+    this._callback.formSubmit = callback;
+    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
+  };
+
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.formSubmit();
+  };
 }

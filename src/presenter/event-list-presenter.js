@@ -43,11 +43,10 @@ export default class EventListPresenter {
       evt.preventDefault();
       replaceEventViewWithEditView();
       document.body.addEventListener('keydown', editEventFormEscapeKeyHandler);
-      editView.element.addEventListener('submit', editEventFormSubmitHandler);
+      editView.setFormSubmitHandler(editEventFormSubmitHandler);
     };
 
-    const tripEventUnwrapButton = tripEventView.element.querySelector('.event__rollup-btn');
-    tripEventUnwrapButton.addEventListener('click', tripEventUnwrapButtonHandler);
+    tripEventView.setUnwrapHandler(tripEventUnwrapButtonHandler);
   }
 
   init(){
