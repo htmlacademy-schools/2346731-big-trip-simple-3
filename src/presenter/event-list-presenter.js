@@ -4,10 +4,11 @@ import TripEventsSortbarView from '../view/trip-events-sortbar-view';
 import TripEventsListView from '../view/trip-events-list-view';
 import TripEventView from '../view/trip-event-view';
 import EventEditView from '../view/event-edit-form/event-edit-view';
-import {createRandomTripEvent} from '../temp-data-factory';
-export default class AbstractPresenter {
+
+export default class EventListPresenter {
   #tripEventsSortBar = new TripEventsSortbarView();
   #tripEventsListView = new TripEventsListView();
+  #timeFiltersView = new TimeFiltersView();
   addTripEvent(tripEvent){
     const tripEventView = new TripEventView(tripEvent);
     const editView = new EventEditView(tripEvent);
@@ -22,10 +23,12 @@ export default class AbstractPresenter {
     };
 
     const editEventFormEscapeKeyHandler = (evt) => {
-      if (evt.key === 'Escape' || evt.keyCode == '38') {
+      if (evt.key === 'Escape' || evt.keyCode === 38) {
         evt.preventDefault();
         replaceEditViewWithEventView();
         document.body.removeEventListener('keydown', editEventFormEscapeKeyHandler);
+        // eslint-disable-next-line no-use-before-define
+        editView.getElement().removeEventListener('submit', editEventFormSubmitHandler);
       }
     };
 
@@ -33,12 +36,14 @@ export default class AbstractPresenter {
       evt.preventDefault();
       replaceEditViewWithEventView();
       document.body.removeEventListener('keydown', editEventFormEscapeKeyHandler);
+      editView.getElement().removeEventListener('submit', editEventFormSubmitHandler);
     };
 
     const tripEventUnwrapButtonHandler = (evt)=>{
       evt.preventDefault();
       replaceEventViewWithEditView();
       document.body.addEventListener('keydown', editEventFormEscapeKeyHandler);
+      editView.getElement().addEventListener('submit', editEventFormSubmitHandler);
     };
 
     const tripEventUnwrapButton = tripEventView.getElement().querySelector('.event__rollup-btn');
@@ -48,19 +53,30 @@ export default class AbstractPresenter {
   init(){
     // Фильтры
     const filtersParentElement = document.querySelector('.trip-controls__filters');
-    render(new TimeFiltersView(), filtersParentElement);
+    render(this.#timeFiltersView, filtersParentElement);
 
     const eventListParentElement = document.querySelector('.trip-events');
 
-    //Сортировка
-    render(this.#tripEventsListView, eventListParentElement);
-    // Список
-    render(this.#tripEventsListView, eventListParentElement);
-    this.addTripEvent(createRandomTripEvent());
-    //3хТочка Маршрута
-    for (let i = 0; i < 3; i++) {
-      this.addTripEvent(createRandomTripEvent());
+    if(this.#tripEventsListView.isEmpty()) {
+      showWelcomeMessage();
+    } else {
+      //Сортировка
+      render(this.#tripEventsListView, eventListParentElement);
+      // Список
+      render(this.#tripEventsListView, eventListParentElement);
     }
-
+    // render(this.#tripEventsListView, eventListParentElement);
+    // // Список
+    // render(this.#tripEventsListView, eventListParentElement);
+    // this.addTripEvent(createRandomTripEvent());
+    // for (let i = 0; i < 3; i++) {
+    //   this.addTripEvent(createRandomTripEvent());
+    // }
   }
+}
+
+function showWelcomeMessage() {
+  const eventListParentElement = document.querySelector('.trip-events');
+  const welcomeMessageElement = createElement('<p class="trip-events__msg">Click New Event to create your first point</p>');
+  eventListParentElement.insertAdjacentElement('beforeend', welcomeMessageElement);
 }
