@@ -2,17 +2,19 @@ import TripEventView from '../view/trip-event-view';
 import EventEditView from '../view/event-edit-form/event-edit-view';
 
 export default class TripEventPresenter{
+  tripEventObject;
   eventListPresenter;
   tripEventView;
   editView;
   actualView;
 
   constructor(tripEvent, eventListPresenter) {
+    this.tripEventObject = tripEvent;
     this.eventListPresenter = eventListPresenter;
     this.tripEventView = new TripEventView(tripEvent);
     this.editView = new EventEditView(tripEvent);
     this.actualView = this.tripEventView;
-    this.tripEventView.setUnwrapHandler(this.tripEventUnwrapButtonHandler);
+    this.setupHandlers();
   }
 
   resetToTripEventView(){
@@ -30,6 +32,23 @@ export default class TripEventPresenter{
   replaceEditViewWithEventView = () => {
     this.editView.element.replaceWith(this.tripEventView.element);
     this.actualView = this.tripEventView;
+  };
+
+
+  //-----Handlers-handling=)---------------------------------
+  setupHandlers(){
+    this.tripEventView.setUnwrapHandler(this.tripEventUnwrapButtonHandler);
+    this.editView.setEventTypeChangeHandler(this.eventTypeChangeHandler);
+    this.editView.setDestinationChangeHandler(this.destinationChangeHandler);
+  }
+
+  eventTypeChangeHandler = (evt) => {
+    this.tripEventObject.setOffers();
+    this.editView.update(this.tripEventObject);
+  };
+
+  destinationChangeHandler = (evt) => {
+    this.tripEventObject.update(this.tripEventObject);
   };
 
   editEventFormEscapeKeyHandler = (evt) => {

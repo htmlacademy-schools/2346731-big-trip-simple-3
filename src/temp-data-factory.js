@@ -32,7 +32,7 @@ function getRandomOffer(){
   const offer = new Offer();
   offer.type = getRandomEventType();
   offer.description = randomOfferDescriptions[getRandomInt(randomOfferDescriptions.length - 1)];
-  offer.price = new Price(getRandomInt(150) + 1, 'USD');
+  offer.price = new Price(getRandomInt(50) + 1, 'USD');
   return offer;
 }
 

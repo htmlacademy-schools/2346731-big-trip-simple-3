@@ -62,6 +62,12 @@ class TripEvent{
     return this.#offers.slice(0);
   }
 
+  setOffers(offers){
+    if (Array.isArray(offers) && offers.every((offer) => offer instanceof Offer)) {
+      this.#offers = offers;
+    }
+  }
+
   addOffer(offer){
     if (offer instanceof Offer){
       this.#offers.push(offer);
