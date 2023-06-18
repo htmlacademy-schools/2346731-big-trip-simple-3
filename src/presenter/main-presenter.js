@@ -4,7 +4,7 @@ import {createRandomTripEvent} from '../temp-data-factory';
 
 export default class MainPresenter {
   #timeFiltersPresenter = new TimeFiltersPresenter();
-  #eventListPresenter = new TripEventListPresenter([]);
+  #eventListPresenter = new TripEventListPresenter([createRandomTripEvent(), createRandomTripEvent()]);
 
   init(){
     this.#timeFiltersPresenter.init();

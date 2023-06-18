@@ -1,4 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
+import {convertToEventDate, convertToEventDateTime, convertToTime} from '../framework/utils/date-time';
 
 const createEventTemplate = (event) => (
   `<div class="event">
@@ -9,9 +10,9 @@ const createEventTemplate = (event) => (
       <h3 class="event__title">${event.eventType} ${event.getDestination().name}</h3>
       <div class="event__schedule">
         <p class="event__time">
-          <time class="event__start-time" datetime="2019-03-18T10:30">${event.startDateTime.getHours()}:${event.startDateTime.getMinutes()}</time>
+          <time class="event__start-time" datetime="2019-03-18T10:30">${convertToTime(event.startDateTime)}</time>
           &mdash;
-          <time class="event__end-time" datetime="2019-03-18T11:00">${event.endDateTime.getHours()}:${event.endDateTime.getMinutes()}</time>
+          <time class="event__end-time" datetime="2019-03-18T11:00">${convertToTime(event.endDateTime)}</time>
         </p>
       </div>
       <p class="event__price">
