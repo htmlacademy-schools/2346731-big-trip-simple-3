@@ -1,3 +1,4 @@
+import AbstractView from '../../framework/view/abstract-view';
 
 const getEventBioTemplate = (event) => (`
   <header class="event__header">
@@ -74,10 +75,10 @@ const getEventBioTemplate = (event) => (`
 
                   <div class="event__field-group  event__field-group--time">
                     <label class="visually-hidden" for="event-start-time-1">From</label>
-                    <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${event.startDateTime.getDate()} ${event.startDateTime.getHours()}:${event.startDateTime.getMinutes()}">
+                    <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="">
                     &mdash;
                     <label class="visually-hidden" for="event-end-time-1">To</label>
-                    <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${event.endDateTime.getDate()} ${event.endDateTime.getHours()}:${event.endDateTime.getMinutes()}">
+                    <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="">
                   </div>
 
                   <div class="event__field-group  event__field-group--price">
@@ -96,8 +97,16 @@ const getEventBioTemplate = (event) => (`
                 </header>
 `);
 
-export default class EventBioView {
-  getTemplate(tripEvent){
-    return getEventBioTemplate(tripEvent);
+export default class EventBioView extends AbstractView{
+  #tripEvent;
+
+  constructor(tripEvent) {
+    super();
+    this.#tripEvent = tripEvent;
+
+  }
+
+  get template(){
+    return getEventBioTemplate(this.#tripEvent);
   }
 }

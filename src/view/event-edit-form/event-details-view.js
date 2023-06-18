@@ -1,3 +1,4 @@
+import AbstractView from '../../framework/view/abstract-view';
 
 const getOfferTemplate = (offer) => (`
 <div class="event__offer-selector">
@@ -37,8 +38,14 @@ const getEventDetailsTemplate = (event) => (`
                 </section>
 `);
 
-export default class EventDetailsView {
-  getTemplate(tripEvent){
-    return getEventDetailsTemplate(tripEvent);
+export default class EventDetailsView extends AbstractView{
+  #tripEvent;
+  constructor(tripEvent) {
+    super();
+    this.#tripEvent = tripEvent;
+  }
+
+  get template(){
+    return getEventDetailsTemplate(this.#tripEvent);
   }
 }
