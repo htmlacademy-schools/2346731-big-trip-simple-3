@@ -33,4 +33,17 @@ export default class TripEventsSortbarView extends AbstractView {
   get template() {
     return createEventsSortTemplate();
   }
+
+  setChangeHandler = (callback)=>{
+    this._callback.click = callback;
+    const radios = this.element.querySelectorAll('input');
+    for (const radio of radios) {
+      radio.addEventListener('change', this.#clickHandler);
+    }
+  };
+
+  #clickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.click(evt);
+  };
 }
