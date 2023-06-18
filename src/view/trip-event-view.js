@@ -1,9 +1,9 @@
-import AbstractView from '../framework/view/abstract-view.js';
-import {convertToEventDate, convertToEventDateTime, convertToTime} from '../framework/utils/date-time';
+import {convertToEventDate, convertToTime} from '../utils/date-time';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 
 const createEventTemplate = (event) => (
   `<div class="event">
-      <time class="event__date" datetime="2019-03-18">${event.startDateTime.getDate()}/${event.startDateTime.getMonth()}</time>
+      <time class="event__date" datetime="${convertToEventDate(event.startDateTime)}">${convertToEventDate(event.startDateTime)}</time>
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="img/icons/${event.eventType.toLowerCase()}.png" alt="Event type icon">
       </div>
@@ -32,7 +32,7 @@ const createEventTemplate = (event) => (
     </div>`
 );
 
-export default class TripEventView extends AbstractView {
+export default class TripEventView extends AbstractStatefulView {
   tripEvent;
 
   get template() {
@@ -54,4 +54,8 @@ export default class TripEventView extends AbstractView {
     evt.preventDefault();
     this._callback.click(evt);
   };
+
+  _restoreHandlers() {
+    return undefined;
+  }
 }
