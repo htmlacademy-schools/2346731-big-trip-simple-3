@@ -17,10 +17,10 @@ export default class TripEventPresenter{
     this.setupHandlers();
   }
 
-  updateView(){
-    this.tripEventView.updateElement(this.tripEventObject);
-    this.editView.updateElement(this.tripEventObject);
-  }
+  updateView = ()=>{
+    this.tripEventView.updateElement({});
+    this.editView.updateElement({});
+  };
 
   resetToTripEventView(){
     if (this.actualView === this.editView){

@@ -23,20 +23,28 @@ const createListItemTemplate = () => (`
 export default class TripEventListPresenter {
   #sortbarView;
   #tripEventsListView;
-  #tripEventsArray = [];
+  #tripEventListModel;
   #presenters = [];
 
 
-  constructor(tripEventsArray) {
+  constructor(tripEventListModel) {
     this.#sortbarView = new TripEventsSortbarView();
     this.#sortbarView.setChangeHandler(this.sortHandler);
     this.#tripEventsListView = new TripEventsListView();
-    for (const tripEvent of tripEventsArray) {
-      this.#tripEventsArray.push(tripEvent);
+    this.#tripEventListModel = tripEventListModel;
+    for (const tripEvent of this.#tripEventListModel.tripEvents) {
       const eventPresenter = new TripEventPresenter(tripEvent, this);
       this.#presenters.push(eventPresenter);
     }
   }
+
+  updateViewObserver = (event)=>{
+    if(event === 'update'){
+      for (const presenter of this.#presenters) {
+        presenter.updateView();
+      }
+    }
+  };
 
   resetAllEventPresentersToEventView(){
     for (const presenter of this.#presenters) {

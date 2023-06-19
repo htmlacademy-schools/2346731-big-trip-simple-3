@@ -1,8 +1,11 @@
 import {convertToEventDate, convertToTime} from '../utils/date-time';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 
-const createEventTemplate = (event) => (
-  `<div class="event">
+const createEventTemplate = (event) => {
+  if (event.isDisabled) {
+    return '<div class="event"></div>';
+  }
+  return `<div class="event">
       <time class="event__date" datetime="${convertToEventDate(event.startDateTime)}">${convertToEventDate(event.startDateTime)}</time>
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="img/icons/${event.eventType.toLowerCase()}.png" alt="Event type icon">
@@ -29,8 +32,8 @@ const createEventTemplate = (event) => (
       <button class="event__rollup-btn" type="button">
         <span class="visually-hidden">Open event</span>
       </button>
-    </div>`
-);
+    </div>`;
+};
 
 export default class TripEventView extends AbstractStatefulView {
   tripEvent;
@@ -45,17 +48,20 @@ export default class TripEventView extends AbstractStatefulView {
   }
 
   setUnwrapHandler = (callback)=>{
-    this._callback.click = callback;
+    this._callback.unwrap = callback;
     const tripEventUnwrapButton = this.element.querySelector('.event__rollup-btn');
-    tripEventUnwrapButton.addEventListener('click', this.#clickHandler);
+    tripEventUnwrapButton.addEventListener('click', this.#unwrapHandler);
   };
 
-  #clickHandler = (evt) => {
+  #unwrapHandler = (evt) => {
     evt.preventDefault();
-    this._callback.click(evt);
+    this._callback.unwrap(evt);
   };
 
   _restoreHandlers() {
-    return undefined;
+    if(this.tripEvent.isDisabled){
+      return;
+    }
+    this.setUnwrapHandler(this._callback.unwrap);
   }
 }

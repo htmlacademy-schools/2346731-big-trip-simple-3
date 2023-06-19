@@ -22,4 +22,17 @@ export default class TimeFiltersView extends AbstractView {
   get template() {
     return createFiltersTemplate();
   }
+
+  setFilterChangeHandler = (callback)=>{
+    this._callback.filterChange = callback;
+    const filtersInputs = this.element.querySelectorAll('.trip-filters__filter-input');
+    for (const filterInput of filtersInputs) {
+      filterInput.addEventListener('change', this.#filterChangeHandler);
+    }
+  };
+
+  #filterChangeHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.filterChange(evt);
+  };
 }
