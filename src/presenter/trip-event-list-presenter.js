@@ -2,7 +2,11 @@ import {createElement, render} from '../render.js';
 import TripEventsListView from '../view/trip-events-list-view';
 import TripEventPresenter from './trip-event-presenter';
 import TripEventsSortbarView from '../view/trip-events-sortbar-view';
-import {compareByDay, compareByPrice, sortList} from '../framework/utils/events-sort-module';
+import {
+  comparePresentersByDay,
+  comparePresentersByPrice,
+  sortList
+} from '../utils/events-sort-module';
 
 function showWelcomeMessage() {
   const eventListParentElement = document.querySelector('.trip-events');
@@ -10,26 +14,37 @@ function showWelcomeMessage() {
   eventListParentElement.insertAdjacentElement('beforeend', welcomeMessageElement);
 }
 
+const createListItemTemplate = () => (`
+  <li class="trip-events__item"></li>
+`);
+
 //---------------------------------------------------------
 
 export default class TripEventListPresenter {
-  #sortbarView = new TripEventsSortbarView();
-  #tripEventsListView = new TripEventsListView();
+  #sortbarView;
+  #tripEventsListView;
+  #tripEventListModel;
   #presenters = [];
 
 
-  constructor(tripEventsArray) {
-    this.#sortbarView.setChangeHandler(this.sort);
-    for (const tripEvent of tripEventsArray) {
-      this.addTripEvent(tripEvent);
+  constructor(tripEventListModel) {
+    this.#sortbarView = new TripEventsSortbarView();
+    this.#sortbarView.setChangeHandler(this.sortHandler);
+    this.#tripEventsListView = new TripEventsListView();
+    this.#tripEventListModel = tripEventListModel;
+    for (const tripEvent of this.#tripEventListModel.tripEvents) {
+      const eventPresenter = new TripEventPresenter(tripEvent, this);
+      this.#presenters.push(eventPresenter);
     }
   }
 
-  addTripEvent(tripEvent){
-    const eventPresenter = new TripEventPresenter(tripEvent, this);
-    this.#tripEventsListView.add(eventPresenter.tripEventView);
-    this.#presenters.push(eventPresenter);
-  }
+  updateViewObserver = (event)=>{
+    if(event === 'update'){
+      for (const presenter of this.#presenters) {
+        presenter.updateView();
+      }
+    }
+  };
 
   resetAllEventPresentersToEventView(){
     for (const presenter of this.#presenters) {
@@ -37,24 +52,24 @@ export default class TripEventListPresenter {
     }
   }
 
-  sort = (evt) => {
-    const listElement = this.#tripEventsListView.element;
+  sortHandler = (evt) => {
     const sortingType = evt.target.value;
-    switch (sortingType) {
-      case ('sort-day'):
-        sortList(listElement, compareByDay);
+    let comparator;
+    switch (sortingType){
+      case('sort-day'):{
+        comparator = comparePresentersByDay;
         break;
-      case ('sort-event'):
+      }
+      case('sort-price'):{
+        comparator = comparePresentersByPrice;
         break;
-      case ('sort-time'):
+      }
+      default: {
+        comparator = comparePresentersByDay;
         break;
-      case ('sort-price'):
-        sortList(listElement, compareByPrice);
-        break;
-      case ('sort-offers'):
-        break;
-      default:
+      }
     }
+    this.#presenters = sortList(this.#tripEventsListView.element, this.#presenters, comparator);
   };
 
   init(){
@@ -63,9 +78,14 @@ export default class TripEventListPresenter {
     render(this.#sortbarView, sortbarParentElement);
     //TripEventsList
     const eventListParentElement = document.querySelector('.trip-events');
+    render(this.#tripEventsListView, eventListParentElement);
+    for (const presenter of this.#presenters) {
+      const listItemElement = createElement(createListItemTemplate());
+      this.#tripEventsListView.element.insertAdjacentElement('beforeend',listItemElement);
+      render(presenter.actualView, listItemElement);
+    }
     if(this.#tripEventsListView.isEmpty()) {
       showWelcomeMessage();
     }
-    render(this.#tripEventsListView, eventListParentElement);
   }
 }

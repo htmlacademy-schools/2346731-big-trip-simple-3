@@ -17,6 +17,11 @@ export default class TripEventPresenter{
     this.setupHandlers();
   }
 
+  updateView = ()=>{
+    this.tripEventView.updateElement({});
+    this.editView.updateElement({});
+  };
+
   resetToTripEventView(){
     if (this.actualView === this.editView){
       this.replaceEditViewWithEventView();
@@ -42,11 +47,13 @@ export default class TripEventPresenter{
     this.editView.setDestinationChangeHandler(this.destinationChangeHandler);
   }
 
+  // eslint-disable-next-line no-unused-vars
   eventTypeChangeHandler = (evt) => {
     this.tripEventObject.setOffers();
     this.editView.update(this.tripEventObject);
   };
 
+  // eslint-disable-next-line no-unused-vars
   destinationChangeHandler = (evt) => {
     this.tripEventObject.update(this.tripEventObject);
   };

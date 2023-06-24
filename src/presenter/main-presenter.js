@@ -1,15 +1,23 @@
 import TimeFiltersPresenter from './time-filters-presenter';
 import TripEventListPresenter from './trip-event-list-presenter';
-import {createRandomTripEvent} from '../temp-data-factory';
 
 export default class MainPresenter {
-  #timeFiltersPresenter = new TimeFiltersPresenter();
-  #eventListPresenter = new TripEventListPresenter([createRandomTripEvent(), createRandomTripEvent()]);
+  #timeFiltersModel;
+  #tripEventListModel;
+  #timeFiltersPresenter;
+  #tripEventListPresenter;
+
+  constructor(timeFiltersModel, tripEventListModel) {
+    this.#timeFiltersModel = timeFiltersModel;
+    this.#tripEventListModel = tripEventListModel;
+    this.#timeFiltersPresenter = new TimeFiltersPresenter(timeFiltersModel);
+    this.#tripEventListPresenter = new TripEventListPresenter(this.#tripEventListModel);
+    this.#timeFiltersModel.addObserver(this.#tripEventListModel.filterChangeObserver);
+    this.#tripEventListModel.addObserver(this.#tripEventListPresenter.updateViewObserver);
+  }
 
   init(){
     this.#timeFiltersPresenter.init();
-    this.#eventListPresenter.init();
-    this.#eventListPresenter.addTripEvent(createRandomTripEvent());
-    this.#eventListPresenter.addTripEvent(createRandomTripEvent());
+    this.#tripEventListPresenter.init();
   }
 }

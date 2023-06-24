@@ -1,28 +1,13 @@
-import AbstractView from '../framework/view/abstract-view.js';
-import {createElement, render} from '../render';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 
 const createListTemplate = () => (`
   <ul class="trip-events__list"></ul>
 `);
 
-const createEventTemplate = () => (`
-  <li class="trip-events__item"></li>
-`);
 
-
-export default class TripEventsListView extends AbstractView {
+export default class TripEventsListView extends AbstractStatefulView {
   get template() {
     return createListTemplate();
-  }
-
-  add(tripEventView){
-    const welcomeMessage = document.querySelector('.trip-events__msg');
-    if(welcomeMessage){
-      welcomeMessage.remove();
-    }
-    const listElement = createElement(createEventTemplate());
-    render(tripEventView, listElement);
-    this.element.append(listElement);
   }
 
   isEmpty(){
@@ -36,5 +21,9 @@ export default class TripEventsListView extends AbstractView {
       }
     }
     return true;
+  }
+
+  _restoreHandlers() {
+    return undefined;
   }
 }

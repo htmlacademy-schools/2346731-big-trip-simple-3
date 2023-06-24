@@ -33,7 +33,7 @@ export class Price{
   }
 }
 class TripEvent{
-
+  isDisabled = false;
   type;
   set eventType (type) {
     if (Object.values(EVENTTYPE).includes(type)){
